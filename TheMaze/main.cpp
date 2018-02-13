@@ -3,7 +3,7 @@
 int main() {
 	Maze maze;
 
-	maze.traverseMaze(10,5);
+	maze.traverseMaze(11,4);
 
 	return 0;
 }
