@@ -10,10 +10,11 @@ public:
 	~Maze();
 
 	void printMaze();
+	bool traverseMaze(int x, int y);
 
 private:
 	std::array<std::array<int, 12>, 12> data;
-
+	int cols, rows;
 
 };
 

@@ -2,7 +2,8 @@
 
 int main() {
 	Maze maze;
-	maze.printMaze();
+
+	maze.traverseMaze(10,5);
 
 	return 0;
 }
