@@ -37,17 +37,22 @@ void Maze::setSolveDir(int direction) {
 }
 
 Maze::Point Maze::searchStartingPoint() {
-	// since we need the index we cannot use a range based loop, 
-	// which is used in the printMaze function
+	// Since we need the index of the 2d array we cannot use a range based loop, 
+	// which is used in the printMaze function. Instead a normal for loop is used
 	Point p;
 	for (size_t i = 0; i < data.size(); i++) {
 		for (size_t j = 0; j < data.size(); j++) {
-			if (data[i][j] == 2) {
+			if (data[i][j] == 2) { // A 2 is represented as the starting point
 				p.x = j;
 				p.y = i;
 			}
 		}
 	}
+
+	// When the starting point is on the top of the maze, the starting direction is DOWN
+	// since that is the only way it can go, the same goes for the rest of the edges of the maze.
+	// When the starting point is not on one of the edges of the maze, but in the maze itself the 
+	// direction is 'randomly' set to UP.
 	int direction;
 	if (p.x == 0) {
 		direction = RIGHT;
@@ -69,40 +74,51 @@ Maze::Point Maze::searchStartingPoint() {
 	return p;
 }
 
-bool Maze::traverseMaze(Point p0) {
-	data[p0.y][p0.x] = 3;
+bool Maze::traverseMaze(Point currentPoint) {
+	// Save the path of the solver
+	data[currentPoint.y][currentPoint.x] = 3;
 
 	printMaze();
 
-	if (checkFinish(p0)) {
+	if (checkFinish(currentPoint)) {
 		std::cout << "Finish found!" << "\n";
 		return true;
 	}
 
-	Point rightPoint = Maze::rightPoint(p0);
-	Point frontPoint = Maze::frontPoint(p0);
+	// Calculate the point to the right and to the front of the current point 
+	// and use that to determine if there is a wall or not
+	Point rightPoint = Maze::rightPoint(currentPoint);
+	Point frontPoint = Maze::frontPoint(currentPoint);
 
 	if (!checkWall(rightPoint)) {
+		// Change the direction to the right and go the next point by calling the function again
 		changeDir(RIGHT);
 		return traverseMaze(rightPoint);
 	}
 	else if(!checkWall(frontPoint)){
+		// When going forward the direction shouldnt change
 		return traverseMaze(frontPoint);
 	}
 	else {
+		// Change the direction to the left and go the next point by calling the function again
 		changeDir(LEFT);
-		return traverseMaze(p0);
+		return traverseMaze(currentPoint);
 	}
+	return false;
 
 }
 
 bool Maze::checkWall(Point p0) {
+	// If the point is outside the maze return true, such that the solver doesnt go there
 	if (p0.x < 0 || p0.x > cols - 1 || p0.y < 0 || p0.y > rows - 1) {
 		return true;
 	}
+	// Check if there is a wall
 	return data[p0.y][p0.x] == 0;
 }
 
+// Calculates the point to the right of the point passed into this function
+// This obviously depends on the current direction of the solver
 Maze::Point Maze::rightPoint(Point p0) {
 	Point p1;
 	if (dir == UP) {
@@ -128,6 +144,8 @@ Maze::Point Maze::rightPoint(Point p0) {
 	return p1;
 }
 
+// Calculates the point to the front of the point passed into this function
+// This obviously depends on the current direction of the solver
 Maze::Point Maze::frontPoint(Point p0) {
 	Point p1;
 	if (dir == UP) {
@@ -153,6 +171,9 @@ Maze::Point Maze::frontPoint(Point p0) {
 	return p1;
 }
 
+// The finished is reached when the solver is on one of the edges of the map
+// and the direction is pointing outwards, i.e. when the solver is on the top row
+// and the direction is pointing up the finished is reached.
 bool Maze::checkFinish(Point p0) {
 	if (p0.x == 0 && dir == LEFT) {
 		return true;
@@ -170,6 +191,8 @@ bool Maze::checkFinish(Point p0) {
 	return false;
 }
 
+// Changes the direction to the right or the left.
+// The direction the solver wants to change to is passed into the function.
 void Maze::changeDir(int targetdir){
 	if (targetdir == RIGHT) {
 		if (dir == LEFT) {

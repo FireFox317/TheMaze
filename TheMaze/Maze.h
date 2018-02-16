@@ -28,9 +28,14 @@ public:
 	~Maze();
 
 	void printMaze();
+
+	// This function solves the maze and the user should pass in the starting point as an argument
 	bool traverseMaze(Point p0);
+
+	// Sets the direction in which the solver starts to solve
 	void setSolveDir(int direction);
 
+	// Returns the starting point of the maze, represented by a 2 in the 12 by 12 array.
 	Point searchStartingPoint();
 
 private:
@@ -38,15 +43,15 @@ private:
 	const int cols = 12;
 	const int rows = 12;
 
+	// Direction used by the solver to use the right-hand rule
 	int dir;
 
+	// Functions used to solve the maze
 	bool checkWall(Point p0);
 	Point rightPoint(Point p0);
 	Point frontPoint(Point p0);
 	bool checkFinish(Point p0);
 	void changeDir(int targetdir);
-
-
 };
 
 #endif
