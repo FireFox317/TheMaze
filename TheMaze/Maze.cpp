@@ -32,7 +32,7 @@ void Maze::printMaze() {
 	std::cout << std::endl;
 }
 
-void Maze::setPathDir(int direction) {
+void Maze::setSolveDir(int direction) {
 	dir = direction;
 }
 
@@ -64,7 +64,7 @@ Maze::Point Maze::searchStartingPoint() {
 	else {
 		direction = UP;
 	}
-	setPathDir(direction);
+	setSolveDir(direction);
 
 	return p;
 }

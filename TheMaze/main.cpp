@@ -1,6 +1,7 @@
 #include "Maze.h"
 
 #include <array>
+#include <iostream>
 
 int main() {
 	std::array<std::array<int, 12>, 12> mazeData = 
@@ -21,10 +22,17 @@ int main() {
 
 	Maze maze(mazeData);
 
+	std::cout << "The Maze Solver!" << "\n\n"
+		<< "Press enter to solve the maze...";
+	std::cin.get();
+
 	Maze::Point startingPoint = maze.searchStartingPoint();
 
-	//Maze::Point startingPoint(11,4);
-	//maze.setPathDir(Maze::LEFT);
+	// Manually setting the startingPoint and searching direction
+	// is done using the following code:
+
+	// Maze::Point startingPoint(11,4);
+	// maze.setSolveDir(Maze::LEFT);
 
 	maze.traverseMaze(startingPoint);
 

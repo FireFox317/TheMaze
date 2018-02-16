@@ -3,10 +3,13 @@
 
 #include <array>
 
+// This class always expects a 12 by 12 array with the following data structure:
+// 0 = wall; 1 = path; 2 = startingpoint.
 class Maze
 {
 public:
 
+	// A struct Point is used to store the x and y value of a section of the maze
 	struct Point {
 		int x;
 		int y;
@@ -14,17 +17,19 @@ public:
 		Point(int _x, int _y) : x(_x), y(_y) {}
 	};
 
+	// These constants are used to define the direction in which the solver can move
 	static const int UP = 0;
 	static const int RIGHT = 1;
 	static const int DOWN = 2;
 	static const int LEFT = 3;
 
+	// When the object is made the user should pass in the 12 by 12 array containing the maze data
 	Maze(std::array<std::array<int, 12>, 12> _data);
 	~Maze();
 
 	void printMaze();
 	bool traverseMaze(Point p0);
-	void setPathDir(int direction);
+	void setSolveDir(int direction);
 
 	Point searchStartingPoint();
 
